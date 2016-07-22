@@ -1,19 +1,14 @@
 package com.ecoffee.ecoffee.ui;
 
-import android.app.ActionBar;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ecoffee.ecoffee.R;
-import com.ecoffee.ecoffee.model.User;
 import com.ecoffee.ecoffee.util.AppUtil;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -57,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if (AppUtil.checkUserExist(u, p)) {
-            Intent intent = new Intent(MainActivity.this,SecoundActivity.class);
+            Intent intent = new Intent(MainActivity.this,TableActivity.class);
             startActivity(intent);
 
         } else {
