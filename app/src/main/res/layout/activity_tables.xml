@@ -6,7 +6,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+"
+        android:text="@string/add_table"
         android:id="@+id/addNewTable"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"

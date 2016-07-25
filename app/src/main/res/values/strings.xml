@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">eCoffee</string>
     <string name="numberOfTable">Tables</string>
+    <string name="add_table">Add Table</string>
+    <string name="add_order">Add Order</string>
+
+    <string name="enter_table_name">Enter Table Name</string>
 </resources>

@@ -36,9 +36,7 @@ public class AppUtil {
         return tables;
     }
 
-    public static List<User> getEmployees() {
-        return employees;
-    }
+    public static List<User> getEmployees() {return employees;}
 
     public static boolean checkUserExist(String username, String password) {
         for (User user : AppUtil.getEmployees()) {

@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="7dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,44 +18,38 @@
             android:layout_alignParentTop="true"
             android:text="Table 1 "
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="30sp" />
+            android:textSize="18sp" />
 
         <Button
-            android:id="@+id/plusOrder"
+            android:id="@+id/addOrder"
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+"
-            android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentTop="true"
+            android:text="@string/add_order" />
+
+
     </RelativeLayout>
 
 
-    <LinearLayout
-        android:orientation="vertical"
+    <TextView
+        android:id="@+id/orderDescription"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="left"
+        android:text="Capucino"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        android:layout_height="70dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Capucino"
-            android:id="@+id/orderDescription"
-            android:padding="18dp"
-             />
-
-
-    </LinearLayout>
 
     <TextView
+        android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_gravity="right"
         android:text="$50"
-        android:textSize="30sp"
-        android:id="@+id/price"
-        android:layout_gravity="right" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="18sp" />
 
 </LinearLayout>

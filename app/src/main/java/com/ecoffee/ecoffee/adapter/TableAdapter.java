@@ -3,7 +3,6 @@ package com.ecoffee.ecoffee.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,10 +44,12 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
         TextView price = (TextView) view.findViewById(R.id.price);
         TextView name = (TextView) view.findViewById(R.id.name);
         TextView orderDescription = (TextView) view.findViewById(R.id.orderDescription);
-        Button plusOrder = (Button) view.findViewById(R.id.plusOrder);
+        Button plusOrder = (Button) view.findViewById(R.id.addOrder);
 
         price.setText("$" + table.getPrice());
-        orderDescription.setText(getDescription(table));
+
+        String tableDesc = getDescription(table);
+        orderDescription.setText(!tableDesc.equals("") ? tableDesc : "No orders in this table");
         name.setText(table.getName());
         plusOrder.setOnClickListener(this);
 
@@ -58,13 +59,22 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.plusOrder:
+            case R.id.addOrder:
 
                 break;
         }
     }
 
     private String getDescription(Table table) {
-        return "";
+        String desc = "";
+        for (int i = 0; i < table.getOrder().getProducts().size(); i++) { //Product product:table.getOrder().getProducts()
+            if (i == 3) {
+                break;
+            }
+            Product product = table.getOrder().getProducts().get(i);
+            desc += product.getName() + "\n";
+        }
+
+        return desc;
     }
 }
