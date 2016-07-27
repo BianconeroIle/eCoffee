@@ -1,22 +1,18 @@
 package com.ecoffee.ecoffee.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ecoffee.ecoffee.R;
+import com.ecoffee.ecoffee.intefrace.OnTableDataChanged;
 import com.ecoffee.ecoffee.model.Product;
 import com.ecoffee.ecoffee.model.Table;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,12 +21,13 @@ import java.util.List;
 public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickListener {
     private List<Table> items;
     private int layoutResource;
+    private OnTableDataChanged listener;
 
-
-    public TableAdapter(Context context, int layoutResource, List<Table> items) {
+    public TableAdapter(Context context, int layoutResource, List<Table> items, OnTableDataChanged listener) {
         super(context, layoutResource, items);
         this.items = items;
         this.layoutResource = layoutResource;
+        this.listener = listener;
     }
 
     @Override
@@ -76,5 +73,13 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
         }
 
         return desc;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        if(listener!=null){
+            listener.onTableDataChanged(getCount());
+        }
     }
 }

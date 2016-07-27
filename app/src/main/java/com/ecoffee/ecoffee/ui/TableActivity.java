@@ -11,20 +11,25 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.ecoffee.ecoffee.R;
 import com.ecoffee.ecoffee.adapter.TableAdapter;
+import com.ecoffee.ecoffee.intefrace.OnTableDataChanged;
 import com.ecoffee.ecoffee.model.Table;
 import com.ecoffee.ecoffee.util.AppUtil;
+
+import java.util.List;
 
 /**
  * Created by Vlade Ilievski on 7/21/2016.
  */
-public class TableActivity extends AppCompatActivity implements View.OnClickListener {
+public class TableActivity extends AppCompatActivity implements View.OnClickListener, OnTableDataChanged {
 
     Button addNewTable;
     ListView listView;
     TableAdapter adapter;
+    TextView infoText;
     int MIN_NEW_TABLE_TEXT_LENGTH = 5;
 
     @Override
@@ -34,8 +39,9 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
 
         addNewTable = (Button) findViewById(R.id.addNewTable);
         listView = (ListView) findViewById(R.id.listView);
+        infoText = (TextView) findViewById(R.id.infoText);
 
-        adapter = new TableAdapter(this, R.layout.item_table, AppUtil.getTables());
+        adapter = new TableAdapter(this, R.layout.item_table, AppUtil.getTables(), this);
         listView.setAdapter(adapter);
         addNewTable.setOnClickListener(this);
 
@@ -50,19 +56,44 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Table table = AppUtil.getTables().get(position);
+                showAlertDialog(table);
                 return true;
             }
 
+
         });
+        List<Table> tables = AppUtil.getTables();
+        if (tables == null || tables.isEmpty()) {
+            infoText.setText("No tables");
+            listView.setVisibility(View.GONE);
+            infoText.setVisibility(View.VISIBLE);
+        }
+
+
     }
-    private void showAlertDialog() {
+
+    private void showAlertDialog(final Table table) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        dialogBuilder.setTitle("Do you want to proceed?");
-     //   dialogBuilder.setPositiveButton
-}
+        dialogBuilder.setTitle("Delete table?");
+        dialogBuilder.setMessage("Do you want to delete: " + table.getName() + " ?");
+        dialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                AppUtil.deleteTable(table);
+                adapter.notifyDataSetChanged();
+
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        dialogBuilder.show();
+    }
 
 
     @Override
@@ -144,6 +175,19 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
 
     public ListView getListView() {
         return listView;
+    }
+
+    @Override
+    public void onTableDataChanged(int count) {
+        Log.d("TableActivity", "onTableDataChanged count=" + count);
+        if (count != 0) {
+            listView.setVisibility(View.VISIBLE);
+            infoText.setVisibility(View.GONE);
+        } else {
+            infoText.setText("No Tables");
+            listView.setVisibility(View.GONE);
+            infoText.setVisibility(View.VISIBLE);
+        }
     }
 }
 
