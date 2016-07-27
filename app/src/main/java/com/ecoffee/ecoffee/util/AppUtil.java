@@ -1,5 +1,6 @@
 package com.ecoffee.ecoffee.util;
 
+import com.ecoffee.ecoffee.model.Product;
 import com.ecoffee.ecoffee.model.Table;
 import com.ecoffee.ecoffee.model.User;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public class AppUtil {
     private static final List<User> employees = new ArrayList<>();
     private static final List<Table> tables = new ArrayList<>();
+    private static final List<Product> products = new ArrayList<>();
 
     static {
         employees.add(new User("ile", "ile123"));
@@ -22,6 +24,14 @@ public class AppUtil {
         tables.add(new Table("Table 2 "));
         tables.add(new Table("Table 3 "));
         tables.add(new Table("Table 4 "));
+
+        products.add(new Product(1, 2.5, "Capucino"));
+        products.add(new Product(2, 1.5, "Fredo"));
+        products.add(new Product(3, 3.0, "Machiato"));
+        products.add(new Product(4, 2.0, "Nescafe"));
+        products.add(new Product(5, 4.5, "Protein shake"));
+        products.add(new Product(6, 2.0, "Espresso"));
+        products.add(new Product(7, 1.0, "Turkish coffee"));
     }
 
     public static void addTable(Table table) {
@@ -36,7 +46,9 @@ public class AppUtil {
         return tables;
     }
 
-    public static List<User> getEmployees() {return employees;}
+    public static List<User> getEmployees() {
+        return employees;
+    }
 
     public static boolean checkUserExist(String username, String password) {
         for (User user : AppUtil.getEmployees()) {
@@ -46,5 +58,9 @@ public class AppUtil {
             }
         }
         return false;
+    }
+
+    public static List<Product> getProducts() {
+        return products;
     }
 }

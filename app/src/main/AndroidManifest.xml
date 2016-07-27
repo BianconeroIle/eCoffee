@@ -19,6 +19,9 @@
         <activity android:name=".ui.TableActivity"
             android:configChanges="orientation">
             </activity>
+        <activity android:name=".ui.OrderDetailsActivity"
+            android:configChanges="orientation">
+            </activity>
     </application>
 
 </manifest>

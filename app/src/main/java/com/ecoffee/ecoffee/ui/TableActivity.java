@@ -3,17 +3,14 @@ package com.ecoffee.ecoffee.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputFilter;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ecoffee.ecoffee.R;
 import com.ecoffee.ecoffee.adapter.TableAdapter;
@@ -41,7 +38,31 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
         adapter = new TableAdapter(this, R.layout.item_table, AppUtil.getTables());
         listView.setAdapter(adapter);
         addNewTable.setOnClickListener(this);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Log.d("TableActivity", "onItemClick " + position);
+                Intent i = new Intent(TableActivity.this, OrderDetailsActivity.class);
+                i.putExtra("clickedTable", position);
+                startActivity(i);
+            }
+        });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+                return true;
+            }
+
+        });
     }
+    private void showAlertDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("Do you want to proceed?");
+     //   dialogBuilder.setPositiveButton
+}
 
 
     @Override
@@ -120,5 +141,9 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+
+    public ListView getListView() {
+        return listView;
+    }
 }
 
