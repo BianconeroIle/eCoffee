@@ -22,6 +22,9 @@
         <activity android:name=".ui.OrderDetailsActivity"
             android:configChanges="orientation">
             </activity>
+        <!--<activity android:name=".ui.MakeOrderDialog"-->
+            <!--android:configChanges="orientation">-->
+        <!--</activity>-->
     </application>
 
 </manifest>

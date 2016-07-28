@@ -75,6 +75,8 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add_new_order:
+                MakeOrderCustomDialog dialog = new MakeOrderCustomDialog(this);
+                dialog.show();
                 break;
         }
 

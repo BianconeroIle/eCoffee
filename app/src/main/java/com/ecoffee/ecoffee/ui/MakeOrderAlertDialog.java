@@ -8,8 +8,8 @@ import android.support.v7.app.AlertDialog;
 /**
  * Created by Vlade Ilievski on 7/27/2016.
  */
-public class MakeOrder extends AlertDialog.Builder {
-    public MakeOrder(Context context) {
+public class MakeOrderAlertDialog extends AlertDialog.Builder {
+    public MakeOrderAlertDialog(Context context) {
         super(context);
     }
 

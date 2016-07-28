@@ -1,28 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:padding="20dp">
 
-    <Spinner
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:id="@+id/spinner"
-        android:layout_marginTop="103dp"
-        android:spinnerMode="dropdown"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="51dp"
-        android:layout_marginStart="51dp" />
 
-    <Spinner
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/spinner2"
-        android:spinnerMode="dropdown"
-        android:layout_alignBottom="@+id/spinner"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="10dp"
-         />
-</RelativeLayout>
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Products: "
+            android:gravity="left"
+            android:id="@+id/productsTextView"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Quantity: "
+            android:id="@+id/quantityTextView"
+            android:gravity="right"
+            />
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/quantitySpinner"
+            android:spinnerMode="dropdown"
+            android:layout_gravity="right" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/productsSpinner"
+            android:spinnerMode="dropdown"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NO"
+            android:id="@+id/buttonNO"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="YES"
+            android:id="@+id/buttonYES"
+            android:layout_marginLeft="40dp"
+            android:layout_alignTop="@+id/buttonNO"
+            android:layout_toLeftOf="@+id/spinner1"
+            android:layout_toStartOf="@+id/spinner1" />
+    </LinearLayout>
+
+</LinearLayout>
