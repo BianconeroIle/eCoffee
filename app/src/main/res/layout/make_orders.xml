@@ -1,73 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
 
-    android:orientation="vertical">
+        <TextView
+            android:id="@+id/productsTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:text="Products: "
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/quantityTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".3"
+            android:text="Quantity: "
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
+
+        <Spinner
+            android:id="@+id/productsSpinner"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Products: "
-            android:gravity="left"
-            android:id="@+id/productsTextView"
-            />
-        <TextView
-            android:layout_width="wrap_content"
+            android:layout_weight=".7"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/quantitySpinner"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Quantity: "
-            android:id="@+id/quantityTextView"
-            android:gravity="right"
-            />
+            android:layout_weight=".3"
+            android:entries="@array/quantity_numbers"
+            android:spinnerMode="dropdown" />
     </LinearLayout>
 
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/quantitySpinner"
-            android:spinnerMode="dropdown"
-            android:layout_gravity="right" />
-
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/productsSpinner"
-            android:spinnerMode="dropdown"
-            />
-
-    </RelativeLayout>
-
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
 
         <Button
+            android:id="@+id/buttonNO"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NO"
-            android:id="@+id/buttonNO"/>
+            android:text="NO" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="YES"
             android:id="@+id/buttonYES"
-            android:layout_marginLeft="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignTop="@+id/buttonNO"
+            android:layout_marginLeft="40dp"
             android:layout_toLeftOf="@+id/spinner1"
-            android:layout_toStartOf="@+id/spinner1" />
+            android:layout_toStartOf="@+id/spinner1"
+            android:text="YES" />
     </LinearLayout>
 
 </LinearLayout>
