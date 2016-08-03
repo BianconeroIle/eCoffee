@@ -31,4 +31,12 @@ public class Table {
     public void setOrder(Order order) {
         this.order = order;
     }
+
+    @Override
+    public String toString() {
+        return "Table{" +
+                "name='" + name + '\'' +
+                ", order=" + order +
+                '}';
+    }
 }

@@ -3,6 +3,7 @@ package com.ecoffee.ecoffee.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 
 
-public class OrderDetailsActivity extends AppCompatActivity implements View.OnClickListener, OnOrderDataChanged {
+public class OrderDetailsActivity extends AppCompatActivity implements View.OnClickListener, OnOrderDataChanged, MakeOrderCustomDialog.OnOrderAdded {
     Button add_new_order;
     ListView orderDescriptionListView;
     DescriptionAdapter dAdapter;
@@ -47,10 +48,11 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
             infoText.setVisibility(View.VISIBLE);
         }
 
-        dAdapter = new DescriptionAdapter(this, AppUtil.getProducts(),this);
+        dAdapter = new DescriptionAdapter(this, products, this);
         orderDescriptionListView.setAdapter(dAdapter);
 
     }
+
     @Override
     public void OnOrderDataChanged(int count) {
         if (count != 0) {
@@ -75,13 +77,16 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add_new_order:
-                MakeOrderCustomDialog dialog = new MakeOrderCustomDialog(this);
+                MakeOrderCustomDialog dialog = new MakeOrderCustomDialog(this, clickedTable, this);
                 dialog.show();
                 break;
         }
 
     }
 
-
-
+    @Override
+    public void onOrderAdded() {
+        dAdapter.notifyDataSetChanged();
+        Log.d("OrderDetailsActivity", AppUtil.getTables().get(clickedTable).getOrder().getProducts().toString());
+    }
 }

@@ -12,6 +12,7 @@ import com.ecoffee.ecoffee.R;
 import com.ecoffee.ecoffee.intefrace.OnTableDataChanged;
 import com.ecoffee.ecoffee.model.Product;
 import com.ecoffee.ecoffee.model.Table;
+import com.ecoffee.ecoffee.ui.MakeOrderCustomDialog;
 
 import java.util.List;
 
@@ -22,12 +23,14 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
     private List<Table> items;
     private int layoutResource;
     private OnTableDataChanged listener;
+    private MakeOrderCustomDialog.OnOrderAdded orderListener;
 
-    public TableAdapter(Context context, int layoutResource, List<Table> items, OnTableDataChanged listener) {
+    public TableAdapter(Context context, int layoutResource, List<Table> items, OnTableDataChanged listener, MakeOrderCustomDialog.OnOrderAdded orderListener) {
         super(context, layoutResource, items);
         this.items = items;
         this.layoutResource = layoutResource;
         this.listener = listener;
+        this.orderListener = orderListener;
     }
 
     @Override
@@ -44,6 +47,7 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
         Button plusOrder = (Button) view.findViewById(R.id.addOrder);
 
         price.setText("$" + table.getPrice());
+        plusOrder.setTag("" + position);
 
         String tableDesc = getDescription(table);
         orderDescription.setText(!tableDesc.equals("") ? tableDesc : "No orders in this table");
@@ -53,11 +57,15 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
         return view;
     }
 
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.addOrder:
-
+                int clickedTablePosition = Integer.valueOf((String) view.getTag());
+                MakeOrderCustomDialog dialog = new MakeOrderCustomDialog(getContext(), clickedTablePosition, orderListener);
+                dialog.show();
                 break;
         }
     }
@@ -72,13 +80,16 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
             desc += product.getName() + "\n";
         }
 
+
         return desc;
     }
+
+
 
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
-        if(listener!=null){
+        if (listener != null) {
             listener.onTableDataChanged(getCount());
         }
     }

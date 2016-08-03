@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Created by Vlade Ilievski on 7/21/2016.
  */
-public class TableActivity extends AppCompatActivity implements View.OnClickListener, OnTableDataChanged {
+public class TableActivity extends AppCompatActivity implements View.OnClickListener, OnTableDataChanged, MakeOrderCustomDialog.OnOrderAdded {
 
     Button addNewTable;
     ListView listView;
@@ -41,7 +41,7 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
         listView = (ListView) findViewById(R.id.listView);
         infoText = (TextView) findViewById(R.id.infoText);
 
-        adapter = new TableAdapter(this, R.layout.item_table, AppUtil.getTables(), this);
+        adapter = new TableAdapter(this, R.layout.item_table, AppUtil.getTables(), this, this);
         listView.setAdapter(adapter);
         addNewTable.setOnClickListener(this);
 
@@ -146,8 +146,13 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
             }
         });
         d.show();
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
     }
 
     private boolean validateNewTable(EditText inputText) {
@@ -188,6 +193,11 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
             listView.setVisibility(View.GONE);
             infoText.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onOrderAdded() {
+        adapter.notifyDataSetChanged();
     }
 }
 

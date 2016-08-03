@@ -35,5 +35,12 @@ public class Order {
         return totalPrice;
     }
 
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "products=" + products +
+                '}';
+    }
 }
 
