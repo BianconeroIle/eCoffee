@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="5dp"
     android:descendantFocusability="blocksDescendants"
     android:orientation="vertical">
 
     <Button
         android:id="@+id/addNewTable"
-        android:padding="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -31,6 +31,17 @@
         android:text=""
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:visibility="gone" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/icon"
+        android:src="@drawable/ic_logo"
+        android:layout_below="@+id/infoText"
+        android:layout_toRightOf="@+id/infoText"
+        android:layout_toEndOf="@+id/infoText"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp" />
 
 
 </RelativeLayout>

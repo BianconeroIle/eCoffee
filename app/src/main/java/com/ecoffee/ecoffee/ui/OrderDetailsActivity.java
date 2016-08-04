@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ecoffee.ecoffee.R;
@@ -31,7 +32,7 @@ import java.util.List;
 public class OrderDetailsActivity extends AppCompatActivity implements View.OnClickListener, OnOrderDataChanged, MakeOrderCustomDialog.OnOrderAdded {
     Button add_new_order;
     Button renameTable;
- //   TextView totalPrice;
+    TextView totalPrice;
     ListView orderDescriptionListView;
     DescriptionAdapter dAdapter;
     TextView infoText;
@@ -40,6 +41,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
     int clickedTable = 1;
     Table table;
     int MIN_NEW_TABLE_TEXT_LENGTH = 5;
+    View totalLayout;
 
 
     @Override
@@ -55,6 +57,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
         initView();
         table = AppUtil.getTables().get(clickedTable);
         tableName.setText(table.getName());
+        totalPrice.setText("$" + table.getPrice());
 
         //List<Product> products = AppUtil.getTables().get(clickedTable).getOrder().getProducts();
         List<Product> products = table.getOrder().getProducts();
@@ -108,22 +111,28 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
         if (count != 0) {
             orderDescriptionListView.setVisibility(View.VISIBLE);
             infoText.setVisibility(View.GONE);
+            totalPrice.setText("$" + table.getPrice());
+            totalPrice.setVisibility(View.VISIBLE);
         } else {
             infoText.setText("No orders");
             orderDescriptionListView.setVisibility(View.GONE);
             infoText.setVisibility(View.VISIBLE);
+            totalPrice.setVisibility(View.GONE);
         }
     }
 
+
     private void initView() {
         infoText = (TextView) findViewById(R.id.intoText);
-    //   totalPrice=(TextView) findViewById(R.id.totalPrice);
+        totalPrice = (TextView) findViewById(R.id.totalPrice);
         tableName = (TextView) findViewById(R.id.tableName);
         renameTable = (Button) findViewById(R.id.renameTable);
         add_new_order = (Button) findViewById(R.id.add_new_order);
         orderDescriptionListView = (ListView) findViewById(R.id.orderDescriptionListView);
+        totalLayout=(View)findViewById(R.id.totalLayout);
         add_new_order.setOnClickListener(this);
         renameTable.setOnClickListener(this);
+        totalLayout.setOnClickListener(this);
 
     }
 
@@ -137,6 +146,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.renameTable:
                 openRenameTableDialog();
+                break;
+            case R.id.totalLayout:
+                openTotalDialog();
                 break;
         }
 
@@ -180,6 +192,32 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                 });
 
             }
+        });
+        d.show();
+    }
+
+    private void openTotalDialog() {
+
+        final AlertDialog d = new AlertDialog.Builder(this)
+                .setTitle("Pay table")
+                .setMessage("Do you want to make a payment?")
+                .setPositiveButton("Pay", null)
+                .setNegativeButton("Cancel", null)
+                .create();
+
+        d.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                Button positiveBtn = d.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        d.dismiss();
+                    }
+                });
+            }
+
         });
         d.show();
     }

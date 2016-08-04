@@ -22,30 +22,26 @@ public class DescriptionAdapter extends ArrayAdapter<Product> implements View.On
     OnOrderDataChanged listener;
 
 
-    public DescriptionAdapter(Context context, List<Product> products , OnOrderDataChanged listener) {
-        super(context, R.layout.item_description,products);
-        this.items=products;
-        this.listener=listener;
+    public DescriptionAdapter(Context context, List<Product> products, OnOrderDataChanged listener) {
+        super(context, R.layout.item_description, products);
+        this.items = products;
+        this.listener = listener;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Product product = getItem(position);
-        if(convertView==null){
-            convertView= LayoutInflater.from(getContext()).inflate(R.layout.item_description,parent,false);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_description, parent, false);
         }
-        TextView productName= (TextView) convertView.findViewById(R.id.productName);
-        TextView productPrice=(TextView)convertView.findViewById(R.id.productPrice);
-        TextView totalPrice=(TextView)convertView.findViewById(R.id.totalPrice);
+        TextView productName = (TextView) convertView.findViewById(R.id.productName);
+        TextView productPrice = (TextView) convertView.findViewById(R.id.productPrice);
 
         productName.setText(product.getName());
-        productPrice.setText("$"+product.getPrice());
-
-        
+        productPrice.setText("$" + product.getPrice());
 
         return convertView;
     }
-
 
 
     @Override
@@ -56,9 +52,11 @@ public class DescriptionAdapter extends ArrayAdapter<Product> implements View.On
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
-        if(listener!=null){
+        if (listener != null) {
             listener.OnOrderDataChanged(getCount());
+
 
         }
     }
+
 }

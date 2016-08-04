@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
     ListView listView;
     TableAdapter adapter;
     TextView infoText;
+
     int MIN_NEW_TABLE_TEXT_LENGTH = 5;
 
 

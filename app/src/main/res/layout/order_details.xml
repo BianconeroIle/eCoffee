@@ -9,15 +9,26 @@
         android:text="Add order"
         android:id="@+id/add_new_order"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentRight="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RENAME TABLE"
+        android:id="@+id/renameTable"
+        android:layout_above="@+id/orderDescriptionListView"
+        android:layout_toLeftOf="@+id/add_new_order"
+        />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/orderDescriptionListView"
         android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/add_new_order" />
+        android:layout_below="@+id/add_new_order"
+
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,25 +49,41 @@
         android:id="@+id/tableName"
         />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="RENAME TABLE"
-        android:id="@+id/renameTable"
-        android:layout_above="@+id/orderDescriptionListView"
-        android:layout_toLeftOf="@+id/add_new_order"
-        android:layout_toStartOf="@+id/add_new_order" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="$50"
-        android:id="@+id/totalPrice"
-        android:textStyle="bold"
+    <RelativeLayout
+        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/lightGreen"
+        android:id="@+id/totalLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="$0"
+            android:layout_marginRight="10dp"
+            android:textColor="@android:color/white"
+            android:id="@+id/totalPrice"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Total:"
+            android:layout_marginRight="10dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:id="@+id/totalTextView"
+            android:layout_alignTop="@+id/totalPrice"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
 
 
 </RelativeLayout>
