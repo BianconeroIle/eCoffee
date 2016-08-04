@@ -36,10 +36,12 @@ public class DescriptionAdapter extends ArrayAdapter<Product> implements View.On
         }
         TextView productName= (TextView) convertView.findViewById(R.id.productName);
         TextView productPrice=(TextView)convertView.findViewById(R.id.productPrice);
+        TextView totalPrice=(TextView)convertView.findViewById(R.id.totalPrice);
 
         productName.setText(product.getName());
         productPrice.setText("$"+product.getPrice());
 
+        
 
         return convertView;
     }
@@ -56,6 +58,7 @@ public class DescriptionAdapter extends ArrayAdapter<Product> implements View.On
         super.notifyDataSetChanged();
         if(listener!=null){
             listener.OnOrderDataChanged(getCount());
+
         }
     }
 }

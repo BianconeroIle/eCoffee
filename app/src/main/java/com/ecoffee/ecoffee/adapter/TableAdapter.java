@@ -1,6 +1,7 @@
 package com.ecoffee.ecoffee.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.ecoffee.ecoffee.model.Table;
 import com.ecoffee.ecoffee.ui.MakeOrderCustomDialog;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Vlade Ilievski on 7/22/2016.
@@ -49,14 +51,15 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
         price.setText("$" + table.getPrice());
         plusOrder.setTag("" + position);
 
-        String tableDesc = getDescription(table);
+        String tableDesc = getCountedDescription(table);// getDescription(table);
         orderDescription.setText(!tableDesc.equals("") ? tableDesc : "No orders in this table");
         name.setText(table.getName());
         plusOrder.setOnClickListener(this);
 
+        Log.d("TableAdapter", "count=" + table.getOrder().countProductInTable());
+
         return view;
     }
-
 
 
     @Override
@@ -79,11 +82,18 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
             Product product = table.getOrder().getProducts().get(i);
             desc += product.getName() + "\n";
         }
-
-
         return desc;
     }
 
+    private String getCountedDescription(Table table) {
+        String desc = "";
+        for (Map.Entry<String, Integer> entry : table.getOrder().countProductInTable().entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            desc += key + " x " + value + "\n";
+        }
+        return desc;
+    }
 
 
     @Override

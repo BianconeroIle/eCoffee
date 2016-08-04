@@ -5,6 +5,7 @@
     <string name="add_order">Add Order</string>
 
     <string name="enter_table_name">Enter Table Name</string>
+    <string name="rename_table_name">Rename Table Name</string>
 
     <string name="quantity_prompt">Choose quantity</string>
     <string-array name="quantity_numbers">

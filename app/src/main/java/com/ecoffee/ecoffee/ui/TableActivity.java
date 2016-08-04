@@ -32,6 +32,7 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
     TextView infoText;
     int MIN_NEW_TABLE_TEXT_LENGTH = 5;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,8 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
         addNewTable = (Button) findViewById(R.id.addNewTable);
         listView = (ListView) findViewById(R.id.listView);
         infoText = (TextView) findViewById(R.id.infoText);
+
+
 
         adapter = new TableAdapter(this, R.layout.item_table, AppUtil.getTables(), this, this);
         listView.setAdapter(adapter);
@@ -51,6 +54,7 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
                 Log.d("TableActivity", "onItemClick " + position);
                 Intent i = new Intent(TableActivity.this, OrderDetailsActivity.class);
                 i.putExtra("clickedTable", position);
+                i.putExtra("tableObject", AppUtil.getTables().get(position));
                 startActivity(i);
             }
         });

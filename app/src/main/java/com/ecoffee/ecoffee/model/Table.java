@@ -1,9 +1,11 @@
 package com.ecoffee.ecoffee.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Vlade Ilievski on 7/22/2016.
  */
-public class Table {
+public class Table implements Serializable{
     private String name;
     private Order order;
 

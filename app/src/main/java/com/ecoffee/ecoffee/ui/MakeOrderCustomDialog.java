@@ -54,6 +54,8 @@ public class MakeOrderCustomDialog extends Dialog implements View.OnClickListene
 
         table = AppUtil.getTables().get(tablePosition);
 
+
+
         buttonYES = (Button) findViewById(R.id.buttonYES);
         buttonNO = (Button) findViewById(R.id.buttonNO);
         produtsTextView = (TextView) findViewById(R.id.productsTextView);

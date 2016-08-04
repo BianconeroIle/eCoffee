@@ -1,9 +1,11 @@
 package com.ecoffee.ecoffee.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Vlade Ilievski on 7/22/2016.
  */
-public class Product {
+public class Product implements Serializable {
     private int id;
     private double price;
     private String name;

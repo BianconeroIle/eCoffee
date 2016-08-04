@@ -1,11 +1,14 @@
 package com.ecoffee.ecoffee.util;
 
+import com.ecoffee.ecoffee.model.Order;
 import com.ecoffee.ecoffee.model.Product;
 import com.ecoffee.ecoffee.model.Table;
 import com.ecoffee.ecoffee.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Vlade Ilievski on 7/21/2016.
@@ -38,6 +41,7 @@ public class AppUtil {
         tables.add(table);
     }
 
+
     public static void deleteTable(Table table) {
         tables.remove(table);
     }
@@ -63,4 +67,6 @@ public class AppUtil {
     public static List<Product> getProducts() {
         return products;
     }
+
 }
+

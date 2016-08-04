@@ -1,12 +1,15 @@
 package com.ecoffee.ecoffee.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Vlade Ilievski on 7/22/2016.
  */
-public class Order {
+public class Order implements Serializable {
 
     private List<Product> products = new ArrayList<>();
 
@@ -34,6 +37,16 @@ public class Order {
         }
         return totalPrice;
     }
+
+    public Map<String, Integer> countProductInTable() {
+        Map<String, Integer> map = new HashMap<>();
+        for (Product p : products) {
+            int tempCount = map.get(p.getName()) != null ? map.get(p.getName()) : 0;
+            map.put(p.getName(), tempCount + 1);
+        }
+        return map;
+    }
+
 
 
     @Override
