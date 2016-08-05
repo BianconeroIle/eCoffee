@@ -1,5 +1,7 @@
 package com.ecoffee.ecoffee.model;
 
+import android.view.View;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +12,8 @@ import java.util.Map;
  * Created by Vlade Ilievski on 7/22/2016.
  */
 public class Order implements Serializable {
+
+    private boolean paid = false;
 
     private List<Product> products = new ArrayList<>();
 
@@ -25,8 +29,12 @@ public class Order implements Serializable {
         products.add(product);
     }
 
-    public void deleteOrder(Product product) {
+    public void deleteProducts(Product product) {
         products.remove(product);
+    }
+
+    public void deleteOrder() {
+        products.clear();
     }
 
     public double calculatePrice() {
@@ -47,12 +55,19 @@ public class Order implements Serializable {
         return map;
     }
 
+    public boolean isPaid() {
+        return paid;
+    }
 
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
 
     @Override
     public String toString() {
         return "Order{" +
-                "products=" + products +
+                "paid=" + paid +
+                ", products=" + products +
                 '}';
     }
 }

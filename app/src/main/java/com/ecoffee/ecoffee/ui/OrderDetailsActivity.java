@@ -1,5 +1,6 @@
 package com.ecoffee.ecoffee.ui;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,11 +8,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ecoffee.ecoffee.R;
@@ -42,13 +43,15 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
     Table table;
     int MIN_NEW_TABLE_TEXT_LENGTH = 5;
     View totalLayout;
+    Activity activity;
+    Button resetBtn;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_details);
-
+        activity = this;
 
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("clickedTable")) {
             clickedTable = getIntent().getExtras().getInt("clickedTable");
@@ -58,7 +61,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
         table = AppUtil.getTables().get(clickedTable);
         tableName.setText(table.getName());
         totalPrice.setText("$" + table.getPrice());
-
+        resetBtn.setVisibility(View.GONE);
         //List<Product> products = AppUtil.getTables().get(clickedTable).getOrder().getProducts();
         List<Product> products = table.getOrder().getProducts();
 
@@ -81,6 +84,8 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                 return false;
             }
         });
+
+
     }
 
 
@@ -91,7 +96,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                table.getOrder().deleteOrder(table.getOrder().getProducts().get(position));
+                table.getOrder().deleteProducts(table.getOrder().getProducts().get(position));
                 dAdapter.notifyDataSetChanged();
 
             }
@@ -128,11 +133,13 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
         tableName = (TextView) findViewById(R.id.tableName);
         renameTable = (Button) findViewById(R.id.renameTable);
         add_new_order = (Button) findViewById(R.id.add_new_order);
+        resetBtn = (Button) findViewById(R.id.resetBtn);
         orderDescriptionListView = (ListView) findViewById(R.id.orderDescriptionListView);
-        totalLayout=(View)findViewById(R.id.totalLayout);
+        totalLayout = (View) findViewById(R.id.totalLayout);
         add_new_order.setOnClickListener(this);
         renameTable.setOnClickListener(this);
         totalLayout.setOnClickListener(this);
+        resetBtn.setOnClickListener(this);
 
     }
 
@@ -150,6 +157,10 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
             case R.id.totalLayout:
                 openTotalDialog();
                 break;
+            case R.id.resetBtn:
+                deleteOrder();
+                break;
+
         }
 
     }
@@ -198,6 +209,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
 
     private void openTotalDialog() {
 
+
         final AlertDialog d = new AlertDialog.Builder(this)
                 .setTitle("Pay table")
                 .setMessage("Do you want to make a payment?")
@@ -209,11 +221,18 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onShow(final DialogInterface dialog) {
-                Button positiveBtn = d.getButton(AlertDialog.BUTTON_POSITIVE);
+                final Button positiveBtn = d.getButton(AlertDialog.BUTTON_POSITIVE);
                 positiveBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        resetBtn.setVisibility(View.VISIBLE);
+                        table.getOrder().setPaid(true);
+                        activity.findViewById(android.R.id.content).setBackgroundColor(getResources().getColor(R.color.paidGreen));
+                        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
                         d.dismiss();
+
                     }
                 });
             }
@@ -242,6 +261,10 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
             tableName.setText(inputText.getText().toString());
             return true;
         }
+    }
+
+    public void deleteOrder() {
+        dAdapter.notifyDataSetChanged();
     }
 
 

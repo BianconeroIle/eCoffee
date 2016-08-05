@@ -8,6 +8,10 @@
 
     <Button
         android:id="@+id/addNewTable"
+        android:background="@drawable/green_button_selector"
+        android:textColor="@android:color/white"
+        android:padding="11dp"
+        android:layout_marginRight="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -19,8 +23,8 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/addNewTable"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/icon" />
 
     <TextView
         android:id="@+id/infoText"

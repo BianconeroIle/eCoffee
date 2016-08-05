@@ -1,19 +1,26 @@
 package com.ecoffee.ecoffee.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ecoffee.ecoffee.R;
 import com.ecoffee.ecoffee.intefrace.OnTableDataChanged;
 import com.ecoffee.ecoffee.model.Product;
 import com.ecoffee.ecoffee.model.Table;
 import com.ecoffee.ecoffee.ui.MakeOrderCustomDialog;
+import com.ecoffee.ecoffee.ui.OrderDetailsActivity;
+import com.ecoffee.ecoffee.util.AppUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -56,6 +63,14 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
         name.setText(table.getName());
         plusOrder.setOnClickListener(this);
 
+        if (table.getOrder().isPaid()) {
+            view.setBackgroundColor(getContext().getResources().getColor(R.color.paidGreen));
+            plusOrder.setText("Refresh Table");
+        } else {
+            view.setBackgroundColor(getContext().getResources().getColor(android.R.color.transparent));
+            plusOrder.setText("ADD ORDER");
+        }
+
         Log.d("TableAdapter", "count=" + table.getOrder().countProductInTable());
 
         return view;
@@ -67,40 +82,65 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
         switch (view.getId()) {
             case R.id.addOrder:
                 int clickedTablePosition = Integer.valueOf((String) view.getTag());
-                MakeOrderCustomDialog dialog = new MakeOrderCustomDialog(getContext(), clickedTablePosition, orderListener);
-                dialog.show();
+                Table table = AppUtil.getTables().get(clickedTablePosition);
+                if (!table.getOrder().isPaid()) {
+                    MakeOrderCustomDialog dialog = new MakeOrderCustomDialog(getContext(), clickedTablePosition, orderListener);
+                    dialog.show();
+                } else {
+                    final AlertDialog d = new AlertDialog.Builder(getContext())
+                            .setTitle("Refresh table")
+                            .setMessage("Do you want to refresh this table?")
+                            .setPositiveButton("Refresh", null)
+                            .setNegativeButton("Cancel", null)
+                            .create();
+
+                    d.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                        @Override
+                        public void onShow(final DialogInterface dialog) {
+                            final Button positiveBtn = d.getButton(AlertDialog.BUTTON_POSITIVE);
+                            positiveBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    d.dismiss();
+                                }
+                            });
+                        }
+                    });
+                    d.show();
+                }
                 break;
         }
     }
 
-    private String getDescription(Table table) {
-        String desc = "";
-        for (int i = 0; i < table.getOrder().getProducts().size(); i++) { //Product product:table.getOrder().getProducts()
-            if (i == 3) {
-                break;
+                private String getDescription (Table table){
+                String desc = "";
+                for (int i = 0; i < table.getOrder().getProducts().size(); i++) { //Product product:table.getOrder().getProducts()
+                    if (i == 3) {
+                        break;
+                    }
+                    Product product = table.getOrder().getProducts().get(i);
+                    desc += product.getName() + "\n";
+                }
+                return desc;
             }
-            Product product = table.getOrder().getProducts().get(i);
-            desc += product.getName() + "\n";
-        }
-        return desc;
-    }
 
-    private String getCountedDescription(Table table) {
-        String desc = "";
-        for (Map.Entry<String, Integer> entry : table.getOrder().countProductInTable().entrySet()) {
-            String key = entry.getKey();
-            Integer value = entry.getValue();
-            desc += key + " x " + value + "\n";
-        }
-        return desc;
-    }
+            private String getCountedDescription (Table table){
+                String desc = "";
+                for (Map.Entry<String, Integer> entry : table.getOrder().countProductInTable().entrySet()) {
+                    String key = entry.getKey();
+                    Integer value = entry.getValue();
+                    desc += key + " x " + value + "\n";
+                }
+                return desc;
+            }
 
 
-    @Override
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
-        if (listener != null) {
-            listener.onTableDataChanged(getCount());
+            @Override
+            public void notifyDataSetChanged () {
+                super.notifyDataSetChanged();
+                if (listener != null) {
+                    listener.onTableDataChanged(getCount());
+                }
+            }
         }
-    }
-}

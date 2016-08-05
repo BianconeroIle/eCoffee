@@ -35,6 +35,11 @@ public class AppUtil {
         products.add(new Product(5, 4.5, "Protein shake"));
         products.add(new Product(6, 2.0, "Espresso"));
         products.add(new Product(7, 1.0, "Turkish coffee"));
+        products.add(new Product(8, 4.5, "Frape"));
+        products.add(new Product(9, 2.0, "Coca cola"));
+        products.add(new Product(10, 1.5, "Water"));
+        products.add(new Product(11, 3.0, "Irish coffee"));
+
     }
 
     public static void addTable(Table table) {

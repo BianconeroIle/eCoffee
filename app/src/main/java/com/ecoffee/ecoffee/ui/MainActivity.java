@@ -1,10 +1,12 @@
 package com.ecoffee.ecoffee.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,6 +18,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText username;
     EditText password;
     Button loginButton;
+    CheckBox rememberMeCheckBox;
+
 
 
     @Override
@@ -31,10 +35,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         loginButton.setOnClickListener(this);
 
-
-
+        rememberMeCheckBox = (CheckBox) findViewById(R.id.rememberMeCheckBox);
 
     }
+
+
+
 
     public void validateCredentials() {
         username.setError(null);
@@ -52,11 +58,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if (AppUtil.checkUserExist(u, p)) {
-            Intent intent = new Intent(MainActivity.this,TableActivity.class);
+            Intent intent = new Intent(MainActivity.this, TableActivity.class);
             startActivity(intent);
 
         } else {
-            Toast.makeText(this,"The username or password you have entered is invalid.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "The username or password you have entered is invalid.", Toast.LENGTH_LONG).show();
 
         }
     }
