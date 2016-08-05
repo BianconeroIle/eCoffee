@@ -61,7 +61,10 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
         table = AppUtil.getTables().get(clickedTable);
         tableName.setText(table.getName());
         totalPrice.setText("$" + table.getPrice());
-        resetBtn.setVisibility(View.GONE);
+        if (table.getOrder().isPaid()) {
+            disableTableFunctionality();
+        }
+
         //List<Product> products = AppUtil.getTables().get(clickedTable).getOrder().getProducts();
         List<Product> products = table.getOrder().getProducts();
 
@@ -75,19 +78,19 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
         dAdapter = new DescriptionAdapter(this, products, this);
         orderDescriptionListView.setAdapter(dAdapter);
 
+        setLongClickListener();
+    }
+
+
+    private void setLongClickListener() {
         orderDescriptionListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-
                 showAlertDialog(table, position);
-
                 return false;
             }
         });
-
-
     }
-
 
     private void showAlertDialog(final Table table, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -158,7 +161,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                 openTotalDialog();
                 break;
             case R.id.resetBtn:
-                deleteOrder();
+                openResetDialog();
                 break;
 
         }
@@ -227,16 +230,39 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                     public void onClick(View view) {
                         resetBtn.setVisibility(View.VISIBLE);
                         table.getOrder().setPaid(true);
-                        activity.findViewById(android.R.id.content).setBackgroundColor(getResources().getColor(R.color.paidGreen));
-                        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
+                        disableTableFunctionality();
                         d.dismiss();
-
                     }
                 });
             }
 
+        });
+        d.show();
+    }
+
+    private void openResetDialog() {
+        final AlertDialog d = new AlertDialog.Builder(this)
+                .setTitle("Refresh table")
+                .setMessage("Do you want to refresh this table?")
+                .setPositiveButton("Refresh", null)
+                .setNegativeButton("Cancel", null)
+                .create();
+
+        d.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                final Button positiveBtn = d.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        table.getOrder().deleteOrder();
+                        table.getOrder().setPaid(false);
+                        enableTableFunctionality();
+                        d.dismiss();
+                    }
+                });
+            }
         });
         d.show();
     }
@@ -273,6 +299,25 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
         dAdapter.notifyDataSetChanged();
         Log.d("OrderDetailsActivity", AppUtil.getTables().get(clickedTable).getOrder().getProducts().toString());
     }
+
+    private void enableTableFunctionality() {
+        resetBtn.setVisibility(View.GONE);
+        activity.findViewById(android.R.id.content).setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        renameTable.setEnabled(true);
+        add_new_order.setEnabled(true);
+        setLongClickListener();
+        totalLayout.setOnClickListener(this);
+    }
+
+    private void disableTableFunctionality() {
+        resetBtn.setVisibility(View.VISIBLE);
+        activity.findViewById(android.R.id.content).setBackgroundColor(getResources().getColor(R.color.paidGreen));
+        renameTable.setEnabled(false);
+        add_new_order.setEnabled(false);
+        orderDescriptionListView.setOnItemLongClickListener(null);
+        totalLayout.setOnClickListener(null);
+    }
+
 }
 
 

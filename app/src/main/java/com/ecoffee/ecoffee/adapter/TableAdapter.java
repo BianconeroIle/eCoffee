@@ -75,7 +75,30 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
 
         return view;
     }
+    private void openResetDialog(){
+        final AlertDialog d = new AlertDialog.Builder(getContext())
+                .setTitle("Refresh table")
+                .setMessage("Do you want to refresh this table?")
+                .setPositiveButton("Refresh", null)
+                .setNegativeButton("Cancel", null)
+                .create();
 
+        d.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                final Button positiveBtn = d.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        d.dismiss();
+                    }
+                });
+            }
+        });
+        d.show();
+    }
 
     @Override
     public void onClick(View view) {
@@ -87,27 +110,8 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
                     MakeOrderCustomDialog dialog = new MakeOrderCustomDialog(getContext(), clickedTablePosition, orderListener);
                     dialog.show();
                 } else {
-                    final AlertDialog d = new AlertDialog.Builder(getContext())
-                            .setTitle("Refresh table")
-                            .setMessage("Do you want to refresh this table?")
-                            .setPositiveButton("Refresh", null)
-                            .setNegativeButton("Cancel", null)
-                            .create();
 
-                    d.setOnShowListener(new DialogInterface.OnShowListener() {
-
-                        @Override
-                        public void onShow(final DialogInterface dialog) {
-                            final Button positiveBtn = d.getButton(AlertDialog.BUTTON_POSITIVE);
-                            positiveBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    d.dismiss();
-                                }
-                            });
-                        }
-                    });
-                    d.show();
+                    openResetDialog();
                 }
                 break;
         }
