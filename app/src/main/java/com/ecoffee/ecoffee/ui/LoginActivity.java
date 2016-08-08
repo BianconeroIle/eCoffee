@@ -1,7 +1,6 @@
 package com.ecoffee.ecoffee.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,35 +10,37 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ecoffee.ecoffee.R;
+import com.ecoffee.ecoffee.util.AppPreferences;
 import com.ecoffee.ecoffee.util.AppUtil;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+import java.util.Date;
+
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     EditText username;
     EditText password;
     Button loginButton;
     CheckBox rememberMeCheckBox;
-
-
+    AppPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferences = new AppPreferences(getApplicationContext());
         setContentView(R.layout.activity_main);
 
+        if (preferences.isUserLogged()) {
+            openTableActivity();
+        }
+
+
         username = (EditText) findViewById(R.id.username);
-
         password = (EditText) findViewById(R.id.password);
-
         loginButton = (Button) findViewById(R.id.loginButton);
-
         loginButton.setOnClickListener(this);
-
         rememberMeCheckBox = (CheckBox) findViewById(R.id.rememberMeCheckBox);
 
     }
-
-
 
 
     public void validateCredentials() {
@@ -58,8 +59,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if (AppUtil.checkUserExist(u, p)) {
-            Intent intent = new Intent(MainActivity.this, TableActivity.class);
-            startActivity(intent);
+            if (rememberMeCheckBox.isChecked()) {
+                preferences.setUserLogged(true);
+                preferences.setExpirationDate(new Date());
+                preferences.setUserName(u);
+            }
+
+            openTableActivity();
 
         } else {
             Toast.makeText(this, "The username or password you have entered is invalid.", Toast.LENGTH_LONG).show();
@@ -67,6 +73,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void openTableActivity() {
+        Intent intent = new Intent(LoginActivity.this, TableActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     public void onClick(View view) {

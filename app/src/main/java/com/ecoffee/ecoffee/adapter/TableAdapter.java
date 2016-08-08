@@ -75,7 +75,7 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
 
         return view;
     }
-    private void openResetDialog(){
+    private void openResetDialog(final Table table){
         final AlertDialog d = new AlertDialog.Builder(getContext())
                 .setTitle("Refresh table")
                 .setMessage("Do you want to refresh this table?")
@@ -91,7 +91,8 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
                 positiveBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        table.getOrder().setPaid(false);
+                        listener.onTableDataChanged(getCount());     // onRefreshtable interface
                         d.dismiss();
                     }
                 });
@@ -110,8 +111,7 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
                     MakeOrderCustomDialog dialog = new MakeOrderCustomDialog(getContext(), clickedTablePosition, orderListener);
                     dialog.show();
                 } else {
-
-                    openResetDialog();
+                    openResetDialog(table);
                 }
                 break;
         }
@@ -147,4 +147,8 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
                     listener.onTableDataChanged(getCount());
                 }
             }
+        private void enableTableFuncionality(){
+
+        }
+
         }

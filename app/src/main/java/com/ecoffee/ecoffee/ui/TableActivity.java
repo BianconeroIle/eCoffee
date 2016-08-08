@@ -190,7 +190,7 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onTableDataChanged(int count) {
-        Log.d("TableActivity", "ontabledatachanged");
+        Log.d("TableActivity", "ontabledatachanged count"+count);
         if (count != 0) {
             listView.setVisibility(View.VISIBLE);
             infoText.setVisibility(View.GONE);
