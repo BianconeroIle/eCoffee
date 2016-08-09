@@ -10,14 +10,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ecoffee.ecoffee.R;
 import com.ecoffee.ecoffee.adapter.TableAdapter;
+import com.ecoffee.ecoffee.intefrace.OnRefreshTable;
 import com.ecoffee.ecoffee.intefrace.OnTableDataChanged;
 import com.ecoffee.ecoffee.model.Table;
+import com.ecoffee.ecoffee.util.AppPreferences;
 import com.ecoffee.ecoffee.util.AppUtil;
 
 import java.util.List;
@@ -25,12 +26,13 @@ import java.util.List;
 /**
  * Created by Vlade Ilievski on 7/21/2016.
  */
-public class TableActivity extends AppCompatActivity implements View.OnClickListener, OnTableDataChanged, MakeOrderCustomDialog.OnOrderAdded {
+public class TableActivity extends AppCompatActivity implements View.OnClickListener, OnTableDataChanged, MakeOrderCustomDialog.OnOrderAdded, OnRefreshTable {
 
     Button addNewTable;
     ListView listView;
     TableAdapter adapter;
     TextView infoText;
+    AppPreferences preferences;
 
     int MIN_NEW_TABLE_TEXT_LENGTH = 5;
 
@@ -39,14 +41,13 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tables);
-
+        preferences = new AppPreferences(this);
         addNewTable = (Button) findViewById(R.id.addNewTable);
         listView = (ListView) findViewById(R.id.listView);
         infoText = (TextView) findViewById(R.id.infoText);
 
 
-
-        adapter = new TableAdapter(this, R.layout.item_table, AppUtil.getTables(), this, this);
+        adapter = new TableAdapter(this, R.layout.item_table, AppUtil.getTables(), this, this, this);
         listView.setAdapter(adapter);
         addNewTable.setOnClickListener(this);
 
@@ -104,6 +105,9 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
+        if (!preferences.checkIsAuthenticatedAndLogout()) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.addNewTable:
                 openAddTableDialog();
@@ -190,7 +194,7 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onTableDataChanged(int count) {
-        Log.d("TableActivity", "ontabledatachanged count"+count);
+        Log.d("TableActivity", "ontabledatachanged count" + count);
         if (count != 0) {
             listView.setVisibility(View.VISIBLE);
             infoText.setVisibility(View.GONE);
@@ -204,6 +208,14 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onOrderAdded() {
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onRefreshTable(boolean refresh) {
+        Log.d("onRefreshTable", "onRefreshTable " + refresh);
+        if (refresh) {
+            adapter.notifyDataSetChanged();
+        }
     }
 }
 

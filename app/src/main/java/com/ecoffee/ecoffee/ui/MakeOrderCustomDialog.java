@@ -16,6 +16,7 @@ import com.ecoffee.ecoffee.R;
 import com.ecoffee.ecoffee.adapter.ProductsSpinnerAdapter;
 import com.ecoffee.ecoffee.model.Product;
 import com.ecoffee.ecoffee.model.Table;
+import com.ecoffee.ecoffee.util.AppPreferences;
 import com.ecoffee.ecoffee.util.AppUtil;
 
 /**
@@ -34,7 +35,7 @@ public class MakeOrderCustomDialog extends Dialog implements View.OnClickListene
     int tablePosition = 0;
     Table table;
     OnOrderAdded listener;
-
+    AppPreferences preferences;
     public interface OnOrderAdded {
         void onOrderAdded();
     }
@@ -51,7 +52,7 @@ public class MakeOrderCustomDialog extends Dialog implements View.OnClickListene
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.make_orders);
-
+        preferences=new AppPreferences(getContext());
         table = AppUtil.getTables().get(tablePosition);
 
 
@@ -74,6 +75,9 @@ public class MakeOrderCustomDialog extends Dialog implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
+        if(!preferences.checkIsAuthenticatedAndLogout()){
+            return;
+        }
         switch (view.getId()) {
             case R.id.buttonYES:
                 addOrder();

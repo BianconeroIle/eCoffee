@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ecoffee.ecoffee.R;
+import com.ecoffee.ecoffee.intefrace.OnRefreshTable;
 import com.ecoffee.ecoffee.intefrace.OnTableDataChanged;
 import com.ecoffee.ecoffee.model.Product;
 import com.ecoffee.ecoffee.model.Table;
@@ -33,13 +34,15 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
     private int layoutResource;
     private OnTableDataChanged listener;
     private MakeOrderCustomDialog.OnOrderAdded orderListener;
+    private OnRefreshTable refreshTableListener;
 
-    public TableAdapter(Context context, int layoutResource, List<Table> items, OnTableDataChanged listener, MakeOrderCustomDialog.OnOrderAdded orderListener) {
+    public TableAdapter(Context context, int layoutResource, List<Table> items, OnTableDataChanged listener, MakeOrderCustomDialog.OnOrderAdded orderListener, OnRefreshTable refreshTableListener) {
         super(context, layoutResource, items);
         this.items = items;
         this.layoutResource = layoutResource;
         this.listener = listener;
         this.orderListener = orderListener;
+        this.refreshTableListener=refreshTableListener;
     }
 
     @Override
@@ -92,7 +95,8 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
                     @Override
                     public void onClick(View view) {
                         table.getOrder().setPaid(false);
-                        listener.onTableDataChanged(getCount());     // onRefreshtable interface
+                        table.getOrder().deleteOrder();
+                        refreshTableListener.onRefreshTable(true);     // onRefreshtableListener interface
                         d.dismiss();
                     }
                 });

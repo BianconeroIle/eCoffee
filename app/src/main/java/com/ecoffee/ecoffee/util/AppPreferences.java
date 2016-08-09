@@ -1,7 +1,11 @@
 package com.ecoffee.ecoffee.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
+
+import com.ecoffee.ecoffee.ui.LoginActivity;
 
 import java.util.Date;
 
@@ -9,6 +13,8 @@ import java.util.Date;
  * Created by Vlade Ilievski on 8/8/2016.
  */
 public class AppPreferences {
+    public static final String TAG = AppPreferences.class.getName();
+
     Context context;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
@@ -47,4 +53,33 @@ public class AppPreferences {
     public boolean isUserLogged() {
         return sp.getBoolean("app.logged", false);
     }
+
+    public boolean isAuthorised() {
+        boolean authorised = false;
+        Date currentDate = new Date();
+        Date loggingDate = new Date(getExpirationDate());
+        authorised = compareAuthorizationDates(currentDate, loggingDate);
+        Log.d(TAG, "check if user is authorized, isAuthorized=" + authorised);
+        return authorised;
+    }
+
+    private boolean compareAuthorizationDates(Date d1, Date d2) {
+        long passedTimeInMilliseconds = d1.getTime() - d2.getTime();
+        Log.d(TAG, "compareAuthorizationDates, passedTime in min=" + ((passedTimeInMilliseconds / (1000 * 60)) % 60));
+        if (passedTimeInMilliseconds >= (AppUtil.LOGIN_EXPIRATION_TIME_MIN * 60 * 1000)) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkIsAuthenticatedAndLogout() {
+        if (!isAuthorised()) {
+            Intent i = new Intent(context, LoginActivity.class);
+            i.putExtra("loginExpired", true);
+            context.startActivity(i);
+            return false;
+        }
+        return true;
+    }
 }
+

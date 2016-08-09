@@ -21,6 +21,7 @@ import com.ecoffee.ecoffee.intefrace.OnOrderDataChanged;
 import com.ecoffee.ecoffee.model.Order;
 import com.ecoffee.ecoffee.model.Product;
 import com.ecoffee.ecoffee.model.Table;
+import com.ecoffee.ecoffee.util.AppPreferences;
 import com.ecoffee.ecoffee.util.AppUtil;
 
 import java.util.List;
@@ -45,6 +46,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
     View totalLayout;
     Activity activity;
     Button resetBtn;
+    AppPreferences preferences;
 
 
     @Override
@@ -52,6 +54,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_details);
         activity = this;
+        preferences=new AppPreferences(this);
 
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("clickedTable")) {
             clickedTable = getIntent().getExtras().getInt("clickedTable");
@@ -149,6 +152,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View view) {
+        if(!preferences.checkIsAuthenticatedAndLogout()){
+            return;
+        }
         switch (view.getId()) {
             case R.id.add_new_order:
                 MakeOrderCustomDialog dialog = new MakeOrderCustomDialog(this, clickedTable, this);

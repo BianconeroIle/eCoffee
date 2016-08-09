@@ -14,6 +14,8 @@ import java.util.Map;
  * Created by Vlade Ilievski on 7/21/2016.
  */
 public class AppUtil {
+    public static final double LOGIN_EXPIRATION_TIME_MIN =0.25;
+
     private static final List<User> employees = new ArrayList<>();
     private static final List<Table> tables = new ArrayList<>();
     private static final List<Product> products = new ArrayList<>();
