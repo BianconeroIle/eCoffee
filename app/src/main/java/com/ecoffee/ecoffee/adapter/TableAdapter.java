@@ -102,6 +102,10 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
                         table.getOrder().setPaid(false);
                         table.getOrder().deleteOrder();
                         refreshTableListener.onRefreshTable(true);
+                        AppUtil.onRefreshTable(table,preferences);
+                        if (preferences != null) {
+                            preferences.saveTables(AppUtil.getTables());
+                        }
                         d.dismiss();
                     }
                 });

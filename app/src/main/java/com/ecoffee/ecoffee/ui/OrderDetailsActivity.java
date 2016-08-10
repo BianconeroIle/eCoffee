@@ -8,7 +8,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 import com.ecoffee.ecoffee.R;
 import com.ecoffee.ecoffee.adapter.DescriptionAdapter;
 import com.ecoffee.ecoffee.intefrace.OnOrderDataChanged;
-import com.ecoffee.ecoffee.model.Order;
 import com.ecoffee.ecoffee.model.Product;
 import com.ecoffee.ecoffee.model.Table;
 import com.ecoffee.ecoffee.util.AppPreferences;
@@ -54,7 +52,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_details);
         activity = this;
-        preferences=new AppPreferences(this);
+        preferences = new AppPreferences(this);
 
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("clickedTable")) {
             clickedTable = getIntent().getExtras().getInt("clickedTable");
@@ -102,7 +100,9 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                table.getOrder().deleteProducts(table.getOrder().getProducts().get(position));
+                //table.getOrder().deleteProduct(table.getOrder().getProducts().get(position));
+                Product product = table.getOrder().getProducts().get(position);
+                AppUtil.deleteProduct(table, product, preferences);
                 dAdapter.notifyDataSetChanged();
 
             }
@@ -152,7 +152,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View view) {
-        if(!preferences.checkIsAuthenticatedAndLogout()){
+        if (!preferences.checkIsAuthenticatedAndLogout()) {
             return;
         }
         switch (view.getId()) {
@@ -324,6 +324,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
         orderDescriptionListView.setOnItemLongClickListener(null);
         totalLayout.setOnClickListener(null);
     }
+
 
 }
 

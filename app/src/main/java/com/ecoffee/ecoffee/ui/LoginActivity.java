@@ -13,10 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ecoffee.ecoffee.R;
+import com.ecoffee.ecoffee.model.Table;
 import com.ecoffee.ecoffee.util.AppPreferences;
 import com.ecoffee.ecoffee.util.AppUtil;
 
 import java.util.Date;
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -35,9 +37,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         preferences = new AppPreferences(getApplicationContext());
         setContentView(R.layout.activity_main);
 
+        AppPreferences preferences = new AppPreferences(this);
+        List<Table> savedTables = preferences.getSavedTables();
+        if (!savedTables.isEmpty()) {
+            AppUtil.addSavedTables(savedTables);
+        } else {
+            AppUtil.generateData();
+        }
+
+
         if (preferences.isAuthorised()) {
             openTableActivity();
         }
+
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         loginButton = (Button) findViewById(R.id.loginButton);
@@ -72,6 +84,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
+
     }
 
 
@@ -117,4 +130,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+
+
 }

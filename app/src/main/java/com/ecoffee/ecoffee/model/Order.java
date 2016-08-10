@@ -1,6 +1,10 @@
 package com.ecoffee.ecoffee.model;
 
+import android.app.ActionBar;
 import android.view.View;
+
+import com.ecoffee.ecoffee.util.AppPreferences;
+import com.ecoffee.ecoffee.util.AppUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,7 +33,7 @@ public class Order implements Serializable {
         products.add(product);
     }
 
-    public void deleteProducts(Product product) {
+    public void deleteProduct(Product product) {
         products.remove(product);
     }
 

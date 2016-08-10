@@ -1,14 +1,11 @@
 package com.ecoffee.ecoffee.util;
 
-import com.ecoffee.ecoffee.model.Order;
 import com.ecoffee.ecoffee.model.Product;
 import com.ecoffee.ecoffee.model.Table;
 import com.ecoffee.ecoffee.model.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Vlade Ilievski on 7/21/2016.
@@ -25,11 +22,6 @@ public class AppUtil {
         employees.add(new User("vlade", "vlade123"));
         employees.add(new User("admin", "admin123"));
 
-        tables.add(new Table("Table 1 "));
-        tables.add(new Table("Table 2 "));
-        tables.add(new Table("Table 3 "));
-        tables.add(new Table("Table 4 "));
-
         products.add(new Product(1, 2.5, "Capucino"));
         products.add(new Product(2, 1.5, "Fredo"));
         products.add(new Product(3, 3.0, "Machiato"));
@@ -41,7 +33,17 @@ public class AppUtil {
         products.add(new Product(9, 2.0, "Coca cola"));
         products.add(new Product(10, 1.5, "Water"));
         products.add(new Product(11, 3.0, "Irish coffee"));
+    }
 
+    public static void addSavedTables(List<Table> savedTables) {
+        tables.addAll(savedTables);
+    }
+
+    public static void generateData() {
+        tables.add(new Table("Table 1 "));
+        tables.add(new Table("Table 2 "));
+        tables.add(new Table("Table 3 "));
+        tables.add(new Table("Table 4 "));
     }
 
     public static void addTable(Table table, AppPreferences preferences) {
@@ -60,7 +62,15 @@ public class AppUtil {
         }
     }
 
-    public static void addOrderOnTable(AppPreferences preferences,Table table, Product product, int quantity) {
+    public static void onRefreshTable(Table table, AppPreferences preferences) {
+        table.getOrder().isPaid();
+        if (preferences != null) {
+            preferences.saveTables(AppUtil.getTables());
+        }
+    }
+
+
+    public static void addOrderOnTable(AppPreferences preferences, Table table, Product product, int quantity) {
         for (int i = 0; i < quantity; i++) {
             table.getOrder().addOrder(product);
         }
@@ -68,6 +78,14 @@ public class AppUtil {
             preferences.saveTables(getTables());
         }
     }
+
+    public static void deleteProduct(Table table, Product product, AppPreferences preferences) {
+        table.getOrder().deleteProduct(product);
+        if (preferences != null) {
+            preferences.saveTables(AppUtil.getTables());
+        }
+    }
+
 
     public static List<Table> getTables() {
         return tables;

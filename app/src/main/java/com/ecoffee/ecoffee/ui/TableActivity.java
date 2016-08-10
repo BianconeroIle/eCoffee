@@ -51,6 +51,7 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
         listView.setAdapter(adapter);
         addNewTable.setOnClickListener(this);
 
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {

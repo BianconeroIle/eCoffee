@@ -108,5 +108,10 @@ public class AppPreferences {
         }
         return Collections.emptyList();
     }
+
+    public void clearData() {
+        editor.clear();
+        editor.commit();
+    }
 }
 
