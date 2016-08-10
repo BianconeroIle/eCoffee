@@ -21,6 +21,7 @@ import com.ecoffee.ecoffee.model.Product;
 import com.ecoffee.ecoffee.model.Table;
 import com.ecoffee.ecoffee.ui.MakeOrderCustomDialog;
 import com.ecoffee.ecoffee.ui.OrderDetailsActivity;
+import com.ecoffee.ecoffee.util.AppPreferences;
 import com.ecoffee.ecoffee.util.AppUtil;
 
 import java.util.List;
@@ -35,6 +36,8 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
     private OnTableDataChanged listener;
     private MakeOrderCustomDialog.OnOrderAdded orderListener;
     private OnRefreshTable refreshTableListener;
+    AppPreferences preferences;
+
 
     public TableAdapter(Context context, int layoutResource, List<Table> items, OnTableDataChanged listener, MakeOrderCustomDialog.OnOrderAdded orderListener, OnRefreshTable refreshTableListener) {
         super(context, layoutResource, items);
@@ -42,7 +45,8 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
         this.layoutResource = layoutResource;
         this.listener = listener;
         this.orderListener = orderListener;
-        this.refreshTableListener=refreshTableListener;
+        this.refreshTableListener = refreshTableListener;
+        preferences = new AppPreferences(getContext());
     }
 
     @Override
@@ -78,7 +82,8 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
 
         return view;
     }
-    private void openResetDialog(final Table table){
+
+    private void openResetDialog(final Table table) {
         final AlertDialog d = new AlertDialog.Builder(getContext())
                 .setTitle("Refresh table")
                 .setMessage("Do you want to refresh this table?")
@@ -96,7 +101,7 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
                     public void onClick(View view) {
                         table.getOrder().setPaid(false);
                         table.getOrder().deleteOrder();
-                        refreshTableListener.onRefreshTable(true);     // onRefreshtableListener interface
+                        refreshTableListener.onRefreshTable(true);
                         d.dismiss();
                     }
                 });
@@ -107,6 +112,9 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
+        if (!preferences.checkIsAuthenticatedAndLogout()) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.addOrder:
                 int clickedTablePosition = Integer.valueOf((String) view.getTag());
@@ -121,38 +129,39 @@ public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickLis
         }
     }
 
-                private String getDescription (Table table){
-                String desc = "";
-                for (int i = 0; i < table.getOrder().getProducts().size(); i++) { //Product product:table.getOrder().getProducts()
-                    if (i == 3) {
-                        break;
-                    }
-                    Product product = table.getOrder().getProducts().get(i);
-                    desc += product.getName() + "\n";
-                }
-                return desc;
+    private String getDescription(Table table) {
+        String desc = "";
+        for (int i = 0; i < table.getOrder().getProducts().size(); i++) { //Product product:table.getOrder().getProducts()
+            if (i == 3) {
+                break;
             }
-
-            private String getCountedDescription (Table table){
-                String desc = "";
-                for (Map.Entry<String, Integer> entry : table.getOrder().countProductInTable().entrySet()) {
-                    String key = entry.getKey();
-                    Integer value = entry.getValue();
-                    desc += key + " x " + value + "\n";
-                }
-                return desc;
-            }
-
-
-            @Override
-            public void notifyDataSetChanged () {
-                super.notifyDataSetChanged();
-                if (listener != null) {
-                    listener.onTableDataChanged(getCount());
-                }
-            }
-        private void enableTableFuncionality(){
-
+            Product product = table.getOrder().getProducts().get(i);
+            desc += product.getName() + "\n";
         }
+        return desc;
+    }
 
+    private String getCountedDescription(Table table) {
+        String desc = "";
+        for (Map.Entry<String, Integer> entry : table.getOrder().countProductInTable().entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            desc += key + " x " + value + "\n";
         }
+        return desc;
+    }
+
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        if (listener != null) {
+            listener.onTableDataChanged(getCount());
+        }
+    }
+
+    private void enableTableFuncionality() {
+
+    }
+
+}

@@ -5,9 +5,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.ecoffee.ecoffee.model.Table;
 import com.ecoffee.ecoffee.ui.LoginActivity;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Vlade Ilievski on 8/8/2016.
@@ -80,6 +86,27 @@ public class AppPreferences {
             return false;
         }
         return true;
+    }
+
+    public void saveTables(List<Table> tables) {
+        Log.d("AppPreferences", "saveTables()");
+        Gson gson = new Gson();
+        editor.putString("app.tables", gson.toJson(tables));
+        editor.commit();
+    }
+
+    public List<Table> getSavedTables() {
+        Log.d("AppPreferences", "getSaveTables()");
+        Gson gson = new Gson();
+        String jsonString = sp.getString("app.tables", "");
+        if (!"".equals(jsonString)) {
+            Type collectionType = new TypeToken<List<Table>>() {
+            }.getType();
+
+            List<Table> listObj = gson.fromJson(jsonString, collectionType);
+            return listObj;
+        }
+        return Collections.emptyList();
     }
 }
 

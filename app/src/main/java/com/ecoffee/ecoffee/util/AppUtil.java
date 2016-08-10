@@ -14,7 +14,7 @@ import java.util.Map;
  * Created by Vlade Ilievski on 7/21/2016.
  */
 public class AppUtil {
-    public static final double LOGIN_EXPIRATION_TIME_MIN =0.25;
+    public static final double LOGIN_EXPIRATION_TIME_MIN = 3600;
 
     private static final List<User> employees = new ArrayList<>();
     private static final List<Table> tables = new ArrayList<>();
@@ -44,13 +44,29 @@ public class AppUtil {
 
     }
 
-    public static void addTable(Table table) {
+    public static void addTable(Table table, AppPreferences preferences) {
         tables.add(table);
+
+        if (preferences != null) {
+            preferences.saveTables(getTables());
+        }
     }
 
 
-    public static void deleteTable(Table table) {
+    public static void deleteTable(Table table, AppPreferences preferences) {
         tables.remove(table);
+        if (preferences != null) {
+            preferences.saveTables(getTables());
+        }
+    }
+
+    public static void addOrderOnTable(AppPreferences preferences,Table table, Product product, int quantity) {
+        for (int i = 0; i < quantity; i++) {
+            table.getOrder().addOrder(product);
+        }
+        if (preferences != null) {
+            preferences.saveTables(getTables());
+        }
     }
 
     public static List<Table> getTables() {
@@ -64,7 +80,6 @@ public class AppUtil {
     public static boolean checkUserExist(String username, String password) {
         for (User user : AppUtil.getEmployees()) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-
                 return true;
             }
         }
@@ -74,6 +89,5 @@ public class AppUtil {
     public static List<Product> getProducts() {
         return products;
     }
-
 }
 

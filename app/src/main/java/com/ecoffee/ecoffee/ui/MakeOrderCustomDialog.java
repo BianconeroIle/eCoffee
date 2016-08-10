@@ -36,6 +36,7 @@ public class MakeOrderCustomDialog extends Dialog implements View.OnClickListene
     Table table;
     OnOrderAdded listener;
     AppPreferences preferences;
+
     public interface OnOrderAdded {
         void onOrderAdded();
     }
@@ -52,9 +53,8 @@ public class MakeOrderCustomDialog extends Dialog implements View.OnClickListene
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.make_orders);
-        preferences=new AppPreferences(getContext());
+        preferences = new AppPreferences(getContext());
         table = AppUtil.getTables().get(tablePosition);
-
 
 
         buttonYES = (Button) findViewById(R.id.buttonYES);
@@ -75,7 +75,7 @@ public class MakeOrderCustomDialog extends Dialog implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        if(!preferences.checkIsAuthenticatedAndLogout()){
+        if (!preferences.checkIsAuthenticatedAndLogout()) {
             return;
         }
         switch (view.getId()) {
@@ -98,9 +98,11 @@ public class MakeOrderCustomDialog extends Dialog implements View.OnClickListene
         int quantity = getContext().getResources().getIntArray(R.array.quantity_integers)[selectedQuantityPosition];
 
 
-        for (int i = 0; i < quantity; i++) {
+       /* for (int i = 0; i < quantity; i++) {
             table.getOrder().addOrder(selectedProduct);
-        }
+        }*/
+        AppUtil.addOrderOnTable(preferences, table, selectedProduct, quantity);
+
 
         Log.d("MakeOrderCustomDialog", "order=" + table.getOrder());
 

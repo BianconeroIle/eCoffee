@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     TextView expiredToken;
     boolean loginExpired = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +38,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (preferences.isAuthorised()) {
             openTableActivity();
         }
-
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         loginButton = (Button) findViewById(R.id.loginButton);
@@ -49,9 +49,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             loginExpired = getIntent().getExtras().getBoolean("loginExpired");
             if (loginExpired) {
                 expiredToken.setVisibility(View.VISIBLE);
+
+
             }
         }
-        username.addTextChangedListener(new TextWatcher() {
+
+        password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -69,7 +72,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
-
     }
 
 
@@ -95,13 +97,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 preferences.setExpirationDate(new Date());
                 preferences.setUserName(u);
             }
-
             openTableActivity();
-
         } else {
-
             Toast.makeText(this, "The username or password you have entered is invalid.", Toast.LENGTH_LONG).show();
-
         }
     }
 
@@ -113,7 +111,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-
         switch (view.getId()) {
             case R.id.loginButton:
                 validateCredentials();

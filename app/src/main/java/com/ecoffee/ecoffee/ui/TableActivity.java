@@ -88,7 +88,7 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
         dialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                AppUtil.deleteTable(table);
+                AppUtil.deleteTable(table,preferences);
                 adapter.notifyDataSetChanged();
 
             }
@@ -181,7 +181,7 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
             inputText.setError("Table already exist");
             return false;
         } else {
-            AppUtil.addTable(new Table(inputText.getText().toString()));
+            AppUtil.addTable(new Table(inputText.getText().toString()), preferences);
             adapter.notifyDataSetChanged();
             return true;
         }

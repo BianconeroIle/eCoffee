@@ -266,6 +266,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements View.OnCl
                         table.getOrder().setPaid(false);
                         enableTableFunctionality();
                         d.dismiss();
+                        infoText.setVisibility(View.VISIBLE);
                     }
                 });
             }
