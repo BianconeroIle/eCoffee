@@ -110,8 +110,9 @@ public class AppPreferences {
     }
 
     public void clearData() {
+        sp.edit().clear().apply();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 }
 

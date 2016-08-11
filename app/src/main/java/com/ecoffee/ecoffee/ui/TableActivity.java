@@ -1,12 +1,18 @@
 package com.ecoffee.ecoffee.ui;
 
+import android.app.ActionBar;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,6 +47,7 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tables);
+
         preferences = new AppPreferences(this);
         addNewTable = (Button) findViewById(R.id.addNewTable);
         listView = (ListView) findViewById(R.id.listView);
@@ -89,7 +96,7 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
         dialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                AppUtil.deleteTable(table,preferences);
+                AppUtil.deleteTable(table, preferences);
                 adapter.notifyDataSetChanged();
 
             }
@@ -113,9 +120,49 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
             case R.id.addNewTable:
                 openAddTableDialog();
                 break;
-
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.logout, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    public void showLogoutDialog() {
+        AlertDialog.Builder logoutDialog = new AlertDialog.Builder(this);
+        logoutDialog.setTitle("Logout");
+        logoutDialog.setMessage("Do you want to logout?");
+        logoutDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                preferences.clearData();
+                Intent intent = new Intent(TableActivity.this, LoginActivity.class);
+                startActivity(intent);
+                dialogInterface.dismiss();
+            }
+        });
+        logoutDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        logoutDialog.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.logout:
+                showLogoutDialog();
+
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private boolean checkIfTableExist(String newTable) {
         for (Table table : AppUtil.getTables()) {
@@ -218,5 +265,9 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
             adapter.notifyDataSetChanged();
         }
     }
+
+
 }
+
+
 
