@@ -1,18 +1,18 @@
 package com.ecoffee.ecoffee.ui;
 
-import android.app.ActionBar;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,10 +27,11 @@ import com.ecoffee.ecoffee.model.Table;
 import com.ecoffee.ecoffee.util.AppPreferences;
 import com.ecoffee.ecoffee.util.AppUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Vlade Ilievski on 7/21/2016.
+ * Created by Ilija Angeleski on 7/21/2016.
  */
 public class TableActivity extends AppCompatActivity implements View.OnClickListener, OnTableDataChanged, MakeOrderCustomDialog.OnOrderAdded, OnRefreshTable {
 
@@ -125,14 +126,57 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.logout, menu);
+        //getMenuInflater().inflate(R.menu.search, menu);
+        MenuInflater inflater = getMenuInflater();
+
+        getMenuInflater().inflate(R.menu.menu, menu);
+
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchTables(newText);
+                return false;
+            }
+        });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void searchTables(String query) {
+        Log.d("TableActivity","searchTables="+query);
+        List<Table> filteredTables = new ArrayList<>();
+        for (Table table : AppUtil.getTables()) {
+            if (table.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredTables.add(table);
+            }
+        }
+
+        if(!filteredTables.isEmpty()){
+            adapter.clear();
+            adapter.addAll(filteredTables);
+            adapter.notifyDataSetChanged();
+        }else{
+            adapter.clear();
+            adapter.addAll(AppUtil.getTables());
+            adapter.notifyDataSetChanged();
+        }
     }
 
     public void showLogoutDialog() {
         AlertDialog.Builder logoutDialog = new AlertDialog.Builder(this);
         logoutDialog.setTitle("Logout");
-        logoutDialog.setMessage("Do you want to logout?");
+        logoutDialog.setMessage("Do you want to menu?");
         logoutDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -157,10 +201,10 @@ public class TableActivity extends AppCompatActivity implements View.OnClickList
         switch (item.getItemId()) {
             case R.id.logout:
                 showLogoutDialog();
-
                 break;
         }
         return super.onOptionsItemSelected(item);
+
     }
 
 

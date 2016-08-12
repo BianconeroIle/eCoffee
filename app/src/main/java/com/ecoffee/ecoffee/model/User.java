@@ -1,7 +1,7 @@
 package com.ecoffee.ecoffee.model;
 
 /**
- * Created by Vlade Ilievski on 7/21/2016.
+ * Created by Ilija Angeleski on 7/21/2016.
  */
 public class User {
 

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Vlade Ilievski on 7/21/2016.
+ * Created by Ilija Angeleski on 7/21/2016.
  */
 public class AppUtil {
     public static final double LOGIN_EXPIRATION_TIME_MIN = 3600;

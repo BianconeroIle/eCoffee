@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Vlade Ilievski on 7/22/2016.
+ * Created by Ilija Angeleski on 7/22/2016.
  */
 public class TableAdapter extends ArrayAdapter<Table> implements View.OnClickListener {
     private List<Table> items;
